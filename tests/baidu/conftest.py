@@ -57,9 +57,9 @@ def pytest_runtest_makereport(item, call):
                                             
                                         # 创建视频内容HTML
                                         video_html = '''
-                                        <div class="video-content" style="margin: 20px 0;">
-                                            <h4 style="color: #2196F3; margin-bottom: 15px;">视频内容</h4>
-                                            <div class="video-sources" style="border: 1px solid #e0e0e0; padding: 15px; border-radius: 4px;">
+                                        <div class="video-content" style="margin: 20px 0; padding: 20px; border: 1px solid #e0e0e0; border-radius: 8px; background-color: #f8f9fa;">
+                                            <h4 style="color: #2196F3; margin-bottom: 20px; font-size: 18px;">视频内容</h4>
+                                            <div class="video-sources" style="background-color: white; padding: 20px; border-radius: 4px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
                                         '''
                                         
                                         has_video_sources = False
@@ -73,14 +73,25 @@ def pytest_runtest_makereport(item, call):
                                                 source_url = ':'.join(line.split(':')[1:]).strip()
                                                 
                                                 video_html += f'''
-                                                <div class="video-source" style="margin: 15px 0; background: #f5f5f5; padding: 10px; border-radius: 4px;">
-                                                    <p style="color: #666; margin-bottom: 5px;">{source_type}:</p>
-                                                    <div class="video-player" style="margin: 10px 0;">
-                                                        <video width="640" height="360" controls preload="metadata" style="max-width: 100%; border: 1px solid #ddd;">
+                                                <div class="video-source" style="margin: 20px 0; background: #ffffff; padding: 15px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+                                                    <p style="color: #333; margin-bottom: 10px; font-weight: bold;">{source_type}:</p>
+                                                    <div class="video-player" style="margin: 15px 0;">
+                                                        <video width="100%" height="auto" controls preload="metadata" style="max-width: 800px; border-radius: 4px; box-shadow: 0 4px 8px rgba(0,0,0,0.1);">
                                                             <source src="{source_url}" type="video/mp4">
                                                             <source src="{source_url}" type="video/webm">
-                                                            <p style="color: #f44336;">您的浏览器不支持视频播放。<a href="{source_url}" target="_blank">点击下载视频</a></p>
+                                                            <source src="{source_url}" type="video/x-flv">
+                                                            <p style="color: #f44336; padding: 10px;">
+                                                                您的浏览器不支持视频播放。
+                                                                <a href="{source_url}" target="_blank" style="color: #2196F3; text-decoration: none; margin-left: 10px;">
+                                                                    点击下载视频
+                                                                </a>
+                                                            </p>
                                                         </video>
+                                                    </div>
+                                                    <div class="video-controls" style="margin-top: 10px;">
+                                                        <a href="{source_url}" target="_blank" style="display: inline-block; padding: 8px 15px; background: #2196F3; color: white; text-decoration: none; border-radius: 4px;">
+                                                            在新窗口打开
+                                                        </a>
                                                     </div>
                                                 </div>
                                                 '''
