@@ -22,6 +22,7 @@ interface Winner {
 function App() {
   const [participants, setParticipants] = useState<Participant[]>([]);
   const [winners, setWinners] = useState<Winner[]>([]);
+  const [currentRoundWinners, setCurrentRoundWinners] = useState<Winner[]>([]);
   const [drawInProgress, setDrawInProgress] = useState(false);
   const [prizeLevel, setPrizeLevel] = useState<number>(5);
   const [winnersCount, setWinnersCount] = useState<number>(1);
@@ -109,6 +110,7 @@ function App() {
 
   const startDrawing = () => {
     setDrawInProgress(true);
+    setCurrentRoundWinners([]); // Clear current round winners
     
     // Filter eligible participants
     const eligible = participants.filter(p => 
@@ -145,6 +147,7 @@ function App() {
 
       // Update state
       setWinners(prev => [...prev, ...newWinners]);
+      setCurrentRoundWinners(newWinners);
       // Animation will stop automatically when drawInProgress becomes false
       setDrawInProgress(false);
       setRemainingCount(prev => prev - newWinners.length);
@@ -235,6 +238,25 @@ function App() {
                 停止抽奖
               </Button>
             </div>
+
+            {/* Current round winners */}
+            {currentRoundWinners.length > 0 && (
+              <div className="mt-6">
+                <h3 className="text-xl font-bold text-red-800 mb-4">本轮中奖者</h3>
+                <div className="flex flex-wrap gap-4">
+                  {currentRoundWinners.map((winner, index) => (
+                    <Card key={index} className="p-3 bg-red-50/50 border border-red-100 flex-grow-0">
+                      <div className="flex items-center whitespace-nowrap">
+                        <Gift className="text-red-600 mr-2 h-5 w-5" />
+                        <span className="text-red-800 text-lg">
+                          {winner.participant.name}
+                        </span>
+                      </div>
+                    </Card>
+                  ))}
+                </div>
+              </div>
+            )}
           </div>
         </Card>
 
@@ -269,7 +291,10 @@ function App() {
                       <div className="flex items-center whitespace-nowrap">
                         <Gift className="text-red-600 mr-2 h-5 w-5" />
                         <span className="text-red-800 text-lg">
-                          {winner.participant.name} ({winner.participant.employeeId})
+                          {winner.participant.name}
+                          <span className="text-sm text-red-600 ml-1">
+                            ({winner.participant.employeeId.slice(-4)})
+                          </span>
                         </span>
                       </div>
                     </Card>
