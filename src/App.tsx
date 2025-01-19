@@ -36,6 +36,7 @@ function App() {
   const [winnersPerDraw, setWinnersPerDraw] = useState<number>(1)
   const winnerCountOptions = [1, 2, 3, 4]
   const [selectedPrize, setSelectedPrize] = useState(0)
+  const [lastRoundDrawCount, setLastRoundDrawCount] = useState(0)
 
   const startDraw = () => {
     if (participants.length === 0) return
@@ -91,6 +92,7 @@ function App() {
     updatedPrizeList[selectedPrize].winners.push(...winners)
     setPrizeList(updatedPrizeList)
     setParticipants(participants.filter(p => !winners.includes(p)))
+    setLastRoundDrawCount(winners.length)
     
     // Set the current winner to the first selected winner
     if (winners.length > 0) {
@@ -194,17 +196,6 @@ function App() {
                 </div>
                 <div className="p-4 bg-black/50 rounded-lg border border-yellow-500/30 tech-glow">
                   <p className="text-yellow-400">当前参与人数: {participants.length}</p>
-                  <div className="mt-2 flex flex-wrap gap-1">
-                    {participants.map((employee) => (
-                      <span 
-                        key={employee.id} 
-                        className="text-sm px-2 py-1 bg-black/50 text-yellow-300 rounded-full border border-yellow-500/30 tech-glow"
-                        title={`入职时间: ${employee.entryDate} | 员工号: ${employee.id}`}
-                      >
-                        {employee.name}
-                      </span>
-                    ))}
-                  </div>
                 </div>
               </div>
 
@@ -233,28 +224,29 @@ function App() {
 
             <div className="mt-8 text-center">
               <div className="mb-4">
-                <div className="relative w-96 h-96 mx-auto mb-8">
-                  {isDrawing && (
+                {isDrawing && (
+                  <div className="relative w-96 h-96 mx-auto mb-8">
                     <div 
-                      className="absolute inset-0 rounded-full border-4 border-yellow-500/30 bg-black/50"
+                      className="absolute inset-0 rounded-full border-8 border-yellow-500/30 bg-gradient-to-br from-black/80 to-black/50 tech-glow"
                       style={{ transform: `rotate(${wheelRotation}deg)`, transition: 'transform 0.016s linear' }}
                     >
                       {participants.slice(0, 10).map((name, index) => (
                         <div
                           key={index}
-                          className="absolute left-1/2 -translate-x-1/2 -translate-y-1/2 text-yellow-400"
+                          className="absolute left-1/2 text-yellow-400 whitespace-nowrap"
                           style={{
                             top: '50%',
-                            transform: `rotate(${(360 / 10) * index}deg) translateY(-160px)`
+                            transform: `rotate(${(360 / 10) * index}deg) translate(-50%, -180px)`,
+                            transformOrigin: '50% 180px'
                           }}
                         >
                           {name.name}
                         </div>
                       ))}
                     </div>
-                  )}
-                  <div className="absolute top-0 left-1/2 -translate-x-1/2 w-0 h-0 border-x-8 border-x-transparent border-t-[16px] border-t-red-600"></div>
-                </div>
+                    <div className="absolute top-0 left-1/2 -translate-x-1/2 w-0 h-0 border-x-8 border-x-transparent border-t-[16px] border-t-red-600"></div>
+                  </div>
+                )}
                 <div className="space-y-4 mb-4">
                   <div>
                     <label className="block text-yellow-400 mb-2">转盘速度</label>
@@ -306,11 +298,16 @@ function App() {
                     "准备开始"
                   )}
                 </h3>
-                <p className="text-yellow-400/80">
-                  {prizeList[selectedPrize].name} - 剩余名额: {
-                    prizeList[selectedPrize].count - prizeList[selectedPrize].winners.length
-                  }
-                </p>
+                {isDrawing && (
+                  <p className="text-yellow-400/80">
+                    {prizeList[selectedPrize].name} - 剩余名额: {
+                      prizeList[selectedPrize].count - prizeList[selectedPrize].winners.length
+                    }
+                  </p>
+                )}
+                {!isDrawing && lastRoundDrawCount > 0 && (
+                  <p className="text-yellow-400/80 mt-2">本轮共抽取 {lastRoundDrawCount} 人</p>
+                )}
               </div>
               <Button
                 size="lg"
