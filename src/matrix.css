@@ -1,0 +1,56 @@
+@keyframes matrix {
+  0% { background-position: 0% 0%; }
+  100% { background-position: 0% 100%; }
+}
+
+@keyframes circuit {
+  0% { background-position: 0% 0%; }
+  100% { background-position: 100% 100%; }
+}
+
+.matrix-bg {
+  background-image: linear-gradient(180deg, 
+    rgba(0, 255, 255, 0.1) 25%,
+    rgba(0, 255, 255, 0.2) 35%,
+    rgba(0, 255, 255, 0.3) 45%,
+    rgba(0, 255, 255, 0.1) 55%);
+  background-size: 100% 300%;
+  animation: matrix 10s linear infinite;
+}
+
+.hologram-effect {
+  animation: hologram 3s ease-in-out infinite;
+  transform-style: preserve-3d;
+  backface-visibility: hidden;
+}
+
+.circuit-pattern {
+  background-image: 
+    radial-gradient(circle at 100% 100%, rgba(0, 255, 255, 0.1) 0%, transparent 50%),
+    linear-gradient(45deg, rgba(0, 255, 255, 0.05) 25%, transparent 25%),
+    linear-gradient(-45deg, rgba(0, 255, 255, 0.05) 25%, transparent 25%);
+  background-size: 200% 200%;
+  animation: circuit 20s linear infinite;
+}
+
+.tech-glow {
+  box-shadow: 0 0 10px rgba(0, 255, 255, 0.3),
+              0 0 20px rgba(0, 255, 255, 0.2),
+              0 0 30px rgba(0, 255, 255, 0.1);
+}
+
+.winner-circuit {
+  position: relative;
+  overflow: hidden;
+}
+
+.winner-circuit::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(0, 255, 255, 0.2), transparent);
+  animation: circuit 1.5s linear infinite;
+}
