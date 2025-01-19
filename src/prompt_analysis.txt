@@ -1,0 +1,78 @@
+Areas for Improvement in Current Prompt Template:
+
+1. Message Tips Logic
+- Current: Simple binary condition (case_set exists or not)
+- Issue: Lacks context-awareness and variety in responses
+- Issue: Default message is too generic ("going to work on that")
+
+2. Task Handling
+- Current: Incomplete task handling (commented out code)
+- Issue: No clear error handling or task validation
+- Issue: Missing structured task tracking
+
+3. Conversation Flow
+- Current: Basic prefix/suffix structure with chat history
+- Issue: No consideration of conversation context beyond last message
+- Issue: Missing clear conversation state management
+- Issue: No handling of multi-turn conversations
+
+4. System Prompt
+- Current: Basic role and identity establishment
+- Issue: Missing specific testing expertise areas
+- Issue: No clear guidelines for technical vs non-technical responses
+- Issue: Missing context about available testing capabilities
+
+5. Message Format
+- Current: Basic instructions for conciseness
+- Issue: No clear structure for different types of responses (status updates, confirmations, technical responses)
+- Issue: Missing guidelines for formatting technical content
+
+6. Error Handling
+- Current: Basic "could not execute" message
+- Issue: No detailed error reporting
+- Issue: Missing fallback options for partial task completion
+- Issue: No guidance for requesting clarification
+
+Recommended Improvements:
+1. Enhanced Message Tips:
+```python
+message_tips = {
+    'task_accepted': f"I'll begin working on {task_type} and provide updates on progress.",
+    'task_completed': f"I've completed {task_type}. Here are the results: {results}",
+    'need_clarification': f"To better assist you, could you please clarify {specific_point}?",
+    'error_encountered': f"I encountered {error_type} while working on {task_type}. Here's what we can do: {solutions}"
+}
+```
+
+2. Improved System Prompt:
+```python
+system_prompt = f"""Your name is {self.name}. You are a professional software tester in {self.project_name} team with expertise in:
+- Automated testing frameworks
+- Performance testing
+- API testing
+- UI/UX testing
+Your communication style should be:
+- Technical and precise when discussing test details
+- Clear and accessible when providing status updates
+- Professional and courteous in all interactions
+{contact} is your client or manager."""
+```
+
+3. Enhanced Conversation Structure:
+```python
+prefix = f"""Context: You are engaged in a technical discussion with {contact} about software testing tasks.
+Previous Context: {get_conversation_context()}
+Current Task Status: {get_task_status()}
+Chat History (marked with [[[ ]]]): [[[
+"""
+
+suffix = f"""]]]
+Response Guidelines:
+1. Consider the technical depth needed based on the recipient
+2. Include specific details about testing progress when relevant
+3. Maintain professional tone while being clear and concise
+4. If technical blockers exist, provide specific details and potential solutions
+
+{message_tips[current_situation]}
+"""
+```

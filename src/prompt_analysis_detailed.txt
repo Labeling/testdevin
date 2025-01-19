@@ -1,0 +1,53 @@
+Current Prompt Analysis
+
+1. Problematic Areas:
+a) Conflicting Instructions
+   - "consider the continuity of the conversation" encourages Chat History focus
+   - "Output should be based on the Current Message" gets overshadowed
+   - No clear prioritization between these competing directives
+
+b) Context Issues
+   - "you could not execute the task for now" creates bias towards previous task context
+   - "assigned you tasks in your chat before" encourages looking at Chat History
+   - System prompt includes both ability to run tests but inability to write them
+
+2. Response Analysis for Example:
+Input: "write a test case for Msn.com"
+Incorrect Output: "I'm unable to execute the XPay Export and import password test at the moment..."
+
+The response shows three key issues:
+a) References XPay test from Chat History instead of addressing Msn.com request
+b) Carries over "unable to execute" context from previous state
+c) Ignores the actual current request about writing a test case
+
+3. Root Causes:
+a) Prompt Structure
+   - Context section emphasizes previous tasks and chat history
+   - Response guidelines don't clearly prioritize Current Message
+   - System capabilities (can run but can't write tests) aren't clearly separated
+
+b) Message Processing
+   - No clear instruction to reset context for each new message
+   - Missing explicit instruction to ignore previous task states
+   - Lack of clear hierarchy in instruction priorities
+
+4. Impact on Model Behavior:
+- Model maintains conversation continuity at the expense of current message relevance
+- Previous task context bleeds into new, unrelated requests
+- Response focuses on inability to execute previous task instead of addressing new request
+
+5. Required Changes:
+a) Instruction Clarity
+   - Remove or modify conversation continuity directive
+   - Add explicit instruction to ignore previous tasks
+   - Clearly prioritize Current Message processing
+
+b) Context Management
+   - Separate system capabilities from task context
+   - Remove "could not execute task" from global context
+   - Add instruction to reset context for each new message
+
+c) Response Structure
+   - Add explicit instruction to address Current Message content first
+   - Remove references to Chat History unless explicitly required
+   - Clear separation between system capabilities and task responses
