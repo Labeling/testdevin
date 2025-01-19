@@ -36,7 +36,6 @@ function App() {
   const [winnersPerDraw, setWinnersPerDraw] = useState<number>(1)
   const winnerCountOptions = [1, 2, 3, 4]
   const [selectedPrize, setSelectedPrize] = useState(0)
-  const [participantInput, setParticipantInput] = useState('')
 
   const startDraw = () => {
     if (participants.length === 0) return
@@ -92,6 +91,11 @@ function App() {
     updatedPrizeList[selectedPrize].winners.push(...winners)
     setPrizeList(updatedPrizeList)
     setParticipants(participants.filter(p => !winners.includes(p)))
+    
+    // Set the current winner to the first selected winner
+    if (winners.length > 0) {
+      setCurrentWinner(winners[0])
+    }
     
     // Add a final spin before resetting
     const finalRotation = Math.ceil(wheelRotation / 360) * 360
@@ -157,23 +161,6 @@ function App() {
     reader.readAsText(file)
   }
 
-  const addParticipant = () => {
-    const trimmedInput = participantInput.trim()
-    if (trimmedInput) {
-      if (participants.some(p => p.name === trimmedInput)) {
-        alert('该参与者已在名单中！')
-        return
-      }
-      const newEmployee: Employee = {
-        entryDate: new Date().toISOString().split('T')[0],
-        id: Date.now().toString(),
-        name: trimmedInput
-      }
-      setParticipants([...participants, newEmployee])
-      setParticipantInput('')
-    }
-  }
-
   return (
     <div className="min-h-screen bg-gradient-to-br from-red-800 to-yellow-700 p-8 matrix-bg circuit-pattern">
       <div className="max-w-4xl mx-auto space-y-8">
@@ -204,16 +191,6 @@ function App() {
                   <p className="text-yellow-400/70 text-sm">
                     上传TSV文件格式要求：每行包含 入职时间、员工号、姓名，用制表符分隔
                   </p>
-                  <div className="flex gap-2">
-                    <Input
-                      value={participantInput}
-                      onChange={(e) => setParticipantInput(e.target.value)}
-                      placeholder="输入参与者姓名"
-                      onKeyDown={(e) => e.key === 'Enter' && addParticipant()}
-                      className="bg-black/50 border-yellow-500/30 text-yellow-400 placeholder:text-yellow-700"
-                    />
-                    <Button onClick={addParticipant} className="bg-red-600 hover:bg-red-700 text-white tech-glow">添加</Button>
-                  </div>
                 </div>
                 <div className="p-4 bg-black/50 rounded-lg border border-yellow-500/30 tech-glow">
                   <p className="text-yellow-400">当前参与人数: {participants.length}</p>
@@ -257,23 +234,25 @@ function App() {
             <div className="mt-8 text-center">
               <div className="mb-4">
                 <div className="relative w-96 h-96 mx-auto mb-8">
-                  <div 
-                    className="absolute inset-0 rounded-full border-4 border-yellow-500/30 bg-black/50"
-                    style={{ transform: `rotate(${wheelRotation}deg)`, transition: 'transform 0.016s linear' }}
-                  >
-                    {participants.map((name, index) => (
-                      <div
-                        key={index}
-                        className="absolute left-1/2 -translate-x-1/2 -translate-y-1/2 text-yellow-400"
-                        style={{
-                          top: '50%',
-                          transform: `rotate(${(360 / participants.length) * index}deg) translateY(-160px)`
-                        }}
-                      >
-                        {isDrawing ? name.name : `${name.name} (${name.id})`}
-                      </div>
-                    ))}
-                  </div>
+                  {isDrawing && (
+                    <div 
+                      className="absolute inset-0 rounded-full border-4 border-yellow-500/30 bg-black/50"
+                      style={{ transform: `rotate(${wheelRotation}deg)`, transition: 'transform 0.016s linear' }}
+                    >
+                      {participants.slice(0, 10).map((name, index) => (
+                        <div
+                          key={index}
+                          className="absolute left-1/2 -translate-x-1/2 -translate-y-1/2 text-yellow-400"
+                          style={{
+                            top: '50%',
+                            transform: `rotate(${(360 / 10) * index}deg) translateY(-160px)`
+                          }}
+                        >
+                          {name.name}
+                        </div>
+                      ))}
+                    </div>
+                  )}
                   <div className="absolute top-0 left-1/2 -translate-x-1/2 w-0 h-0 border-x-8 border-x-transparent border-t-[16px] border-t-red-600"></div>
                 </div>
                 <div className="space-y-4 mb-4">
