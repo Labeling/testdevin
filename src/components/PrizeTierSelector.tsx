@@ -42,8 +42,15 @@ export const PrizeTierSelector: React.FC<PrizeTierSelectorProps> = ({
             >
               {PRIZE_TIERS.map((tier) => (
                 <div key={tier.value} className="flex items-center space-x-2">
-                  <RadioGroupItem value={tier.value} id={`tier-${tier.value}`} />
-                  <Label htmlFor={`tier-${tier.value}`} className="text-white">
+                  <RadioGroupItem 
+                    value={tier.value} 
+                    id={`tier-${tier.value}`}
+                    className="data-[state=checked]:bg-yellow-400/20 data-[state=checked]:ring-2 data-[state=checked]:ring-yellow-400 data-[state=checked]:ring-offset-2 transition-all duration-200"
+                  />
+                  <Label 
+                    htmlFor={`tier-${tier.value}`} 
+                    className="text-white data-[state=checked]:text-yellow-400 data-[state=checked]:font-bold transition-all duration-200 hover:text-yellow-300"
+                  >
                     {tier.label}
                   </Label>
                 </div>
@@ -59,8 +66,15 @@ export const PrizeTierSelector: React.FC<PrizeTierSelectorProps> = ({
             >
               {WINNER_COUNTS.map((count) => (
                 <div key={count.value} className="flex items-center space-x-2">
-                  <RadioGroupItem value={count.value} id={`count-${count.value}`} />
-                  <Label htmlFor={`count-${count.value}`} className="text-white">
+                  <RadioGroupItem 
+                    value={count.value} 
+                    id={`count-${count.value}`}
+                    className="data-[state=checked]:bg-yellow-400/20 data-[state=checked]:ring-2 data-[state=checked]:ring-yellow-400 data-[state=checked]:ring-offset-2 transition-all duration-200"
+                  />
+                  <Label 
+                    htmlFor={`count-${count.value}`} 
+                    className="text-white data-[state=checked]:text-yellow-400 data-[state=checked]:font-bold transition-all duration-200 hover:text-yellow-300"
+                  >
                     {count.label}
                   </Label>
                 </div>

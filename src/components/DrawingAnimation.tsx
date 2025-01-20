@@ -145,18 +145,15 @@ export const DrawingAnimation: React.FC<DrawingAnimationProps> = ({
     };
   }, [isDrawing, participants, winnerCount, slots]);
 
-  if (!isDrawing && slots.length === 0) {
-    return null;
-  }
-
+  // Always render the slots container, even when not drawing
   return (
     <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 p-8">
-      {slots.map((slotNames, slotIndex) => (
+      {(slots.length > 0 ? slots : [Array(20).fill('')]).map((slotNames, slotIndex) => (
         <div
           key={slotIndex}
-          className={`slot-reel bg-gradient-to-b from-red-900/50 to-red-950/50 backdrop-blur rounded-lg p-4 overflow-hidden h-32 relative ${isDrawing ? 'spinning' : ''}`}
+          className={`slot-reel bg-gradient-to-b from-red-900/80 to-red-950/90 backdrop-blur rounded-lg p-4 overflow-hidden h-48 relative ${isDrawing ? 'spinning' : ''}`}
         >
-          <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-black/50 pointer-events-none" />
+          <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-black/70 pointer-events-none" />
           <div 
             className="transition-transform duration-100"
             style={{

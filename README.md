@@ -1,50 +1,79 @@
-# React + TypeScript + Vite
+# 苏州博彦年会抽奖系统
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+一个纯前端的年会抽奖系统，支持多级奖项设置和动态抽奖动画。
 
-Currently, two official plugins are available:
+## 功能特点
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- ✨ 支持TSV文件导入参与者信息
+- 🎯 五个奖项级别（一等奖至五等奖）
+- 🎲 每轮可抽取1-4名获奖者
+- 🎰 老虎机风格抽奖动画
+- 🔊 抽奖音效
+- 📊 获奖者分组显示
+- 🔄 实时更新参与人数
 
-## Expanding the ESLint configuration
+## 安装与运行
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+```bash
+# 安装依赖
+npm install
 
-- Configure the top-level `parserOptions` property like this:
+# 启动开发服务器
+npm run dev
 
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
+# 构建生产版本
+npm run build
 ```
 
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
+## 使用说明
 
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
+### 参与者数据格式 (TSV)
 
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
+请准备包含以下列的TSV文件：
+1. 入职时间 (YYYY-MM-DD格式)
+2. 员工号
+3. 姓名
+
+示例：
 ```
+入职时间	员工号	姓名
+2020-01-01	EMP001	张三
+2021-06-15	EMP002	李四
+2022-03-30	EMP003	王五
+```
+
+注意事项：
+- 确保数据中没有重复的员工信息
+- 日期格式必须为YYYY-MM-DD
+- TSV文件可以包含或不包含表头行
+
+### 操作流程
+
+1. 点击"上传参与者名单"按钮选择TSV文件
+2. 选择要抽取的奖项等级
+3. 选择本轮抽取人数（1-4人）
+4. 点击"开始抽奖"按钮开始抽奖动画
+5. 点击"停止"按钮产生中奖结果
+
+### 浏览器要求
+
+- 推荐使用最新版本的Chrome、Firefox或Safari
+- 需要启用JavaScript
+- 建议开启声音以获得最佳体验
+
+## 技术栈
+
+- React + TypeScript
+- Tailwind CSS
+- Vite
+- Web Audio API
+- shadcn/ui
+
+## 系统特性
+
+- 实时显示参与总人数
+- 当前轮次抽奖结果实时展示
+- 历史中奖记录按奖项分组展示
+- 自动去重和验证功能
+- 流畅的抽奖动画效果
+- 抽奖过程配有音效
