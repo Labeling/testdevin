@@ -1,6 +1,38 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@keyframes flash {
+  0% { filter: brightness(1.5); box-shadow: 0 0 25px rgba(255, 215, 0, 0.5); background: linear-gradient(to bottom, rgba(185, 28, 28, 0.95), rgba(153, 27, 27, 0.98)); }
+  50% { filter: brightness(3.5); box-shadow: 0 0 50px rgba(255, 215, 0, 0.9); background: linear-gradient(to bottom, rgba(220, 38, 38, 0.95), rgba(185, 28, 28, 0.98)); }
+  100% { filter: brightness(1.5); box-shadow: 0 0 25px rgba(255, 215, 0, 0.5); background: linear-gradient(to bottom, rgba(185, 28, 28, 0.95), rgba(153, 27, 27, 0.98)); }
+}
+
+@keyframes spin {
+  from { transform: translateY(0); }
+  to { transform: translateY(-100%); }
+}
+
+.flash-animation {
+  animation: flash 1.2s ease-in-out;
+}
+
+.slot-reel {
+  transition: all 0.5s ease-out;
+  box-shadow: 0 0 30px rgba(255, 215, 0, 0.4);
+  background: linear-gradient(to bottom, rgba(185, 28, 28, 0.95), rgba(153, 27, 27, 0.98));
+  border: 2px solid rgba(255, 215, 0, 0.3);
+}
+
+.spinning {
+  animation: spin 2s ease-in-out infinite;
+  box-shadow: 0 0 40px rgba(255, 215, 0, 0.6);
+}
+
+.slot-reel:hover {
+  box-shadow: 0 0 35px rgba(255, 215, 0, 0.7);
+  border-color: rgba(255, 215, 0, 0.5);
+}
 @layer base {
   :root {
     --radius: 0.5rem
