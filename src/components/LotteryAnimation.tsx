@@ -21,7 +21,6 @@ export const LotteryAnimation = ({
   onStop,
 }: LotteryAnimationProps) => {
   const [displayNames, setDisplayNames] = useState<string[]>([]);
-  const [currentParticipants, setCurrentParticipants] = useState<Participant[]>([]);
   const timeoutRef = useRef<number | null>(null);
   const frameRef = useRef<number | null>(null);
   const lastFrameRef = useRef<Participant[]>([]);
@@ -58,7 +57,6 @@ export const LotteryAnimation = ({
           const randomIndex = Math.floor(Math.random() * participants.length);
           return participants[randomIndex];
         });
-        setCurrentParticipants(newRoll);
         setDisplayNames(newRoll.map(p => p.name));
         lastFrameRef.current = newRoll;
 
