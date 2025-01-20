@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>苏州博彦年会抽奖系统</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>年会抽奖</h1>
+            <div class="total-count">
+                参与人数：<span id="totalParticipants">0</span>
+            </div>
+        </header>
+
+        <section class="upload-section">
+            <input type="file" id="tsvFile" accept=".tsv" class="file-input">
+            <label for="tsvFile" class="file-label">上传名单 (TSV文件)</label>
+        </section>
+
+        <section class="prize-controls">
+            <div class="prize-selection">
+                <h3>奖项设置</h3>
+                <div class="prize-options">
+                    <label><input type="radio" name="prizeLevel" value="1">一等奖</label>
+                    <label><input type="radio" name="prizeLevel" value="2">二等奖</label>
+                    <label><input type="radio" name="prizeLevel" value="3">三等奖</label>
+                    <label><input type="radio" name="prizeLevel" value="4">四等奖</label>
+                    <label><input type="radio" name="prizeLevel" value="5">五等奖</label>
+                </div>
+                <div class="winner-count">
+                    <label>本轮抽取人数：</label>
+                    <select id="winnerCount">
+                        <option value="1">1人</option>
+                        <option value="2">2人</option>
+                        <option value="3">3人</option>
+                        <option value="4">4人</option>
+                    </select>
+                </div>
+            </div>
+        </section>
+
+        <section class="lottery-display">
+            <div class="drawing-container">
+                <div class="slot-machine" id="slotMachine"></div>
+                <div id="currentWinners" class="winners-grid hidden"></div>
+            </div>
+            <div class="control-buttons">
+                <button id="startBtn" class="btn-start" disabled>开始抽奖</button>
+                <button id="stopBtn" class="btn-stop" disabled>停止</button>
+            </div>
+        </section>
+
+        <section class="all-winners">
+            <h3>累计中奖名单</h3>
+            <div id="allWinners" class="winners-list"></div>
+        </section>
+    </div>
+
+    <script src="js/jquery.min.js"></script>
+    <script src="js/main.js"></script>
+</body>
+</html>

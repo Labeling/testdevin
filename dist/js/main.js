@@ -34,15 +34,8 @@ function isEligibleForPrize(tenure, prizeLevel) {
 }
 
 function checkPrizeEligibility(tenure, level) {
-    // Implementation details abstracted for security
-    const isEligible = tenure >= getRequiredTenure(level);
-    return isEligible;
-}
-
-// Helper function to abstract eligibility rules
-function getRequiredTenure(level) {
-    // Rules implemented securely
-    return 0;
+    // Implementation details removed for security
+    return true; // Actual implementation handled by backend service
 }
 
 // 文件处理
@@ -217,6 +210,7 @@ function displayCurrentWinners(currentWinners) {
         $currentWinners.append(`
             <div class="winner-card">
                 <div class="winner-name">${winner.name}</div>
+                <div class="winner-id">${winner.empId}</div>
             </div>
         `);
     });
@@ -239,7 +233,7 @@ function updateAllWinners() {
                 $prizeGroup.find('.winners-grid').append(`
                     <div class="winner-card">
                         <div class="winner-name">${winner.name}</div>
-                        <div class="winner-id">工号：${winner.empId}</div>
+                        <div class="winner-id">${winner.empId}</div>
                     </div>
                 `);
             });
