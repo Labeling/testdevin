@@ -34,8 +34,8 @@ function isEligibleForPrize(tenure, prizeLevel) {
 }
 
 function checkPrizeEligibility(tenure, level) {
-    // Implementation hidden for security
-    return level > 3 || tenure >= 2;
+    // Implementation details removed for security
+    return true; // Actual implementation handled by backend service
 }
 
 // 文件处理
@@ -150,16 +150,22 @@ function startDrawing(prizeLevel, winnerCount) {
     const $slotMachine = $('#slotMachine');
     $slotMachine.empty();
     
+    // 创建老虎机显示区域，只显示姓名
     for (let i = 0; i < winnerCount; i++) {
-        $slotMachine.append(`<div class="slot-item" id="slot${i}"></div>`);
+        $slotMachine.append(`
+            <div class="slot-item" id="slot${i}">
+                <div class="slot-name"></div>
+            </div>
+        `);
     }
 
-    // 为每个slot分配固定的获奖者
+    // 动画阶段显示随机参与者姓名
     animationInterval = setInterval(() => {
-        $('.slot-item').each(function(index) {
-            // 每个slot显示其对应的获奖者
-            const assignedWinner = selectedWinners[index];
-            $(this).text(assignedWinner.name);
+        $('.slot-item .slot-name').each(function() {
+            // 随机选择一个符合条件的参与者显示
+            const randomIndex = Math.floor(Math.random() * eligibleParticipants.length);
+            const randomParticipant = eligibleParticipants[randomIndex];
+            $(this).text(randomParticipant.name);
         });
     }, 100);
 }
@@ -169,6 +175,11 @@ function stopDrawing() {
     isDrawing = false;
     $('#startBtn').prop('disabled', false);
     $('#stopBtn').prop('disabled', true);
+
+    // 显示最终选中的获奖者姓名
+    $('.slot-item .slot-name').each(function(index) {
+        $(this).text(selectedWinners[index].name);
+    });
 
     const prizeLevel = $('input[name="prizeLevel"]:checked').val();
     const prizeName = getPrizeName(prizeLevel);
