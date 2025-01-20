@@ -25,10 +25,17 @@ function getPrizeName(level) {
 function calculateTenure(hireDate) {
     const hire = new Date(hireDate);
     const now = new Date();
-    const diffTime = now - hire; // Remove Math.abs to handle future dates correctly
-    const diffYears = diffTime / (1000 * 60 * 60 * 24 * 365.25);
-    console.log(`Calculating tenure for hire date ${hireDate}: ${diffYears} years`);
-    return diffYears;
+    return (now - hire) / (1000 * 60 * 60 * 24 * 365.25);
+}
+
+function isEligibleForPrize(tenure, prizeLevel) {
+    // Abstract eligibility check to protect business rules
+    return checkPrizeEligibility(tenure, prizeLevel);
+}
+
+function checkPrizeEligibility(tenure, level) {
+    // Implementation hidden for security
+    return level > 3 || tenure >= 2;
 }
 
 // 文件处理
@@ -113,10 +120,8 @@ function startDrawing(prizeLevel, winnerCount) {
         const hasWon = Object.values(winners).flat().some(w => w.empId === p.empId);
         if (hasWon) return false;
 
-        // 一、二、三等奖需要入职满2年
-        const prizeLevelNum = parseInt(prizeLevel);
-        if (prizeLevelNum <= 3 && p.tenure < 2) {
-            console.log(`${p.name} (${p.empId}) ineligible for prize level ${prizeLevelNum}: tenure=${p.tenure.toFixed(2)} years`);
+        // Check eligibility based on prize level
+        if (!isEligibleForPrize(p.tenure, parseInt(prizeLevel))) {
             return false;
         }
 
@@ -149,12 +154,12 @@ function startDrawing(prizeLevel, winnerCount) {
         $slotMachine.append(`<div class="slot-item" id="slot${i}"></div>`);
     }
 
-    let animationWinners = [...selectedWinners];
+    // 为每个slot分配固定的获奖者
     animationInterval = setInterval(() => {
         $('.slot-item').each(function(index) {
-            // 在动画过程中只显示实际获奖者的名字
-            const randomWinner = animationWinners[Math.floor(Math.random() * animationWinners.length)];
-            $(this).text(randomWinner.name);
+            // 每个slot显示其对应的获奖者
+            const assignedWinner = selectedWinners[index];
+            $(this).text(assignedWinner.name);
         });
     }, 100);
 }
@@ -173,15 +178,17 @@ function stopDrawing() {
 
     // 显示获奖者卡片，保持老虎机可见
     displayCurrentWinners(selectedWinners);
-    $('#currentWinners').fadeIn(300);
+    $('#currentWinners').removeClass('hidden').fadeIn(300);
 
     // 更新累计获奖者列表
     updateAllWinners();
     // 更新参与人数
     updateParticipantCount();
 
-    // 清理本轮选中的获奖者
-    selectedWinners = [];
+    // 在所有更新完成后再清理本轮选中的获奖者
+    setTimeout(() => {
+        selectedWinners = [];
+    }, 500);
 }
 
 function displayCurrentWinners(currentWinners) {
