@@ -171,13 +171,9 @@ function stopDrawing() {
     // 更新获奖者列表
     winners[prizeName].push(...selectedWinners);
 
-    // 淡出老虎机显示，显示获奖者卡片
-    $('#slotMachine').fadeOut(300, function() {
-        $(this).addClass('hidden');
-        // 显示本轮获奖者
-        displayCurrentWinners(selectedWinners);
-        $('#currentWinners').fadeIn(300);
-    });
+    // 显示获奖者卡片，保持老虎机可见
+    displayCurrentWinners(selectedWinners);
+    $('#currentWinners').fadeIn(300);
 
     // 更新累计获奖者列表
     updateAllWinners();
